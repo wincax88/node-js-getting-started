@@ -32,16 +32,17 @@ let ts = parseInt(new Date().getTime() / 1000)
 
 let options = {
   url: config.hostUrl,
-  headers: getReqHeader(),
-  form: getPostBody()
+  // headers: getReqHeader(),
+  // form: getPostBody()
 }
 
-exports.recognizeDocument = (image) => {
-  // console.log('recognizeDocument -> ', options.form);
+exports.recognizeDocument = (image, timestamp) => {
+  console.log('recognizeDocument -> ', timestamp);
   return new Promise((resolve, reject) => {
     // 返回识别结果json串
     // getPostBody(image)
     // .then(data => {
+      options.headers = getReqHeader(timestamp),
       options.form = { image: image}
       request.post(options, (err, resp, body) => {
         if (err) {
@@ -71,13 +72,13 @@ function getXParamStr() {
 }
 
 // 组装请求头
-function getReqHeader() {
+function getReqHeader(timestamp) {
   let xParamStr = getXParamStr()
-  let xCheckSum = CryptoJS.MD5(config.apiKey + ts + xParamStr).toString()
+  let xCheckSum = CryptoJS.MD5(config.apiKey + timestamp + xParamStr).toString()
   return {
     'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
     'X-Appid': config.appid,
-    'X-CurTime': ts + "",
+    'X-CurTime': timestamp + "",
     'X-Param': xParamStr,
     'X-CheckSum': xCheckSum
   }

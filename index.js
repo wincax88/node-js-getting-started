@@ -28,7 +28,7 @@ express()
   .get('/times', (req, res) => res.send(showTimes()))
   .post('/recognize', (req, res) => {
     // console.log('req -> ', req.body);
-    recognizeDocument(req.body.image)
+    recognizeDocument(req.body.image, req.body.timestamp)
     .then(data => {
       res.send(data)
     })
