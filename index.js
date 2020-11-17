@@ -2,6 +2,7 @@ const cool = require('cool-ascii-faces');
 const express = require('express')
 const path = require('path')
 const formData = require('express-form-data');
+const cors = require('cors')
 // import {recognizeDocument} from './ocr-general-multi-node'
 
 const ocr = require('./ocr-general-multi-node')
@@ -12,6 +13,7 @@ console.log(ocr.recognizeDocument);
 const PORT = process.env.PORT || 5000
 
 express()
+  .use(cors())
   .use(express.static(path.join(__dirname, 'public')))
   .use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
